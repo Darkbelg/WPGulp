@@ -24,35 +24,32 @@
   * Edit the variables as per your project requirements.
   */
 
-var project             = 'WPGulpTheme'; // Project Name.
-var projecturl          = 'wpgulp.dev'; // Project URL. Could be something like localhost:8888.
+var project             = 'MyProject'; // Project Name.
+var projecturl          = 'myproject.dev'; // Project URL.
 
 
-var styleSRC            = './assets/css/style.scss'; // Path to main .scss file.
-var styleDestination    = './'; // Path to place the compiled CSS file.
-								// Defualt set to root folder.
+var styleSRC            = './assets/src/scss/style.scss'; // Path to main .scss file.
+var styleDestination    = './assets/dist/css/'; // Path to place the compiled CSS file.
 
 
-var jsVendorSRC         = './assets/js/vendors/*.js'; // Path to JS vendors folder.
-var jsVendorDestination = './assets/js/'; // Path to place the compiled JS vendors file.
-var jsVendorFile        = 'vendors'; // Compiled JS vendors file name.
-									// Default set to vendors i.e. vendors.js.
+var jsVendorSRC         = './assets/src/js/vendors/**/*.js'; // Path to JS vendors folder.
+var jsVendorDestination = './assets/dist/js/'; // Path to place the compiled JS vendors file.
+var jsVendorFile        = 'vendors'; // Compiled JS vendors file name i.e. vendors.js.
 
 
-var jsCustomSRC         = './assets/js/custom/*.js'; // Path to JS custom scripts folder.
-var jsCustomDestination = './assets/js/'; // Path to place the compiled JS custom scripts file.
-var jsCustomFile        = 'custom'; // Compiled JS custom file name.
-									// Default set to custom i.e. custom.js.
+var jsCustomSRC         = './assets/src/js/custom/*.js'; // Path to JS custom scripts folder.
+var jsCustomDestination = './assets/dist/js/'; // Path to place the compiled JS custom scripts file.
+var jsCustomFile        = 'main'; // Compiled JS custom file name. i.e. main.js.
 
 
-var imagesSRC			= './assets/img/raw/**/*.{png,jpg,gif,svg}'; // Source folder of images which should be optimized.
-var imagesDestination	= './assets/img/'; // Destination folder of optimized images. Must be different from the imagesSRC folder.
+var imagesSRC		= './assets/src/img/**/*.{png,jpg,gif,svg}'; // Source folder of images which should be optimized.
+var imagesDestination	= './assets/dist/img/'; // Destination folder of optimized images. Must be different from the imagesSRC folder.
 
 
 // Watch files paths.
-var styleWatchFiles     = './assets/css/**/*.scss'; // Path to all *.scss files inside css folder and inside them.
-var vendorJSWatchFiles  = './assets/js/vendors/*.js'; // Path to all vendors JS files.
-var customJSWatchFiles  = './assets/js/custom/*.js'; // Path to all custom JS files.
+var styleWatchFiles     = './assets/src/scss/**/*.scss'; // Path to all *.scss files inside css folder and inside them.
+var vendorJSWatchFiles  = './assets/src/js/vendors/*.js'; // Path to all vendors JS files.
+var customJSWatchFiles  = './assets/src/js/custom/*.js'; // Path to all custom JS files.
 
 
 // Browsers you care about for autoprefixing.
@@ -111,25 +108,25 @@ var reload       = browserSync.reload; // For manual browser reload.
  * 		4. You may want to stop the browser from openning automatically
  */
  gulp.task( 'browser-sync', function() {
- 	browserSync.init( {
+   browserSync.init( {
 
- 		// For more options
- 		// @link http://www.browsersync.io/docs/options/
+     // For more options
+     // @link http://www.browsersync.io/docs/options/
 
- 		// Project URL.
- 		proxy: projecturl,
+     // Project URL.
+     proxy: projecturl,
 
- 		// Stop the browser from automatically opening.
- 		open: false,
+     // Stop the browser from automatically opening.
+     open: false,
 
- 		// Inject CSS changes.
- 		// Commnet it to reload browser for every CSS change.
- 		// injectChanges: true,
+     // Inject CSS changes.
+     // Commnet it to reload browser for every CSS change.
+     injectChanges: true,
 
- 		// Use a specific port (instead of the one auto-detected by Browsersync).
- 		// port: 7000,
+     // Use a specific port (instead of the one auto-detected by Browsersync).
+     // port: 7000,
 
- 	} );
+   } );
  });
 
 
@@ -148,31 +145,31 @@ var reload       = browserSync.reload; // For manual browser reload.
  * 		7. Injects CSS or reloads the browser via browserSync
  */
 gulp.task('styles', function () {
- 	gulp.src( styleSRC )
-		.pipe( sourcemaps.init() )
-		.pipe( sass( {
-			errLogToConsole: true,
-			outputStyle: 'compact',
-			//outputStyle: 'compressed',
-			// outputStyle: 'nested',
-			// outputStyle: 'expanded',
-			precision: 10
-		} ) )
-		.pipe( sourcemaps.write( { includeContent: false } ) )
-		.pipe( sourcemaps.init( { loadMaps: true } ) )
-		.pipe( autoprefixer( AUTOPREFIXER_BROWSERS ) )
+   gulp.src( styleSRC )
+    .pipe( sourcemaps.init() )
+    .pipe( sass( {
+      errLogToConsole: true,
+      outputStyle: 'compact',
+      //outputStyle: 'compressed',
+      // outputStyle: 'nested',
+      // outputStyle: 'expanded',
+      precision: 10
+    } ) )
+    .pipe( sourcemaps.write( { includeContent: false } ) )
+    .pipe( sourcemaps.init( { loadMaps: true } ) )
+    .pipe( autoprefixer( AUTOPREFIXER_BROWSERS ) )
 
-		.pipe( sourcemaps.write ( styleDestination ) )
-		.pipe( gulp.dest( styleDestination ) )
+    .pipe( sourcemaps.write ( styleDestination ) )
+    .pipe( gulp.dest( styleDestination ) )
 
 
-		.pipe( rename( { suffix: '.min' } ) )
-		.pipe( minifycss( {
-			maxLineLen: 10
-		}))
-		.pipe( gulp.dest( styleDestination ) )
-		.pipe( browserSync.stream() )
-		.pipe( notify( { message: 'TASK: "styles" Completed!', onLast: true } ) )
+    .pipe( rename( { suffix: '.min' } ) )
+    .pipe( minifycss( {
+      maxLineLen: 10
+    }))
+    .pipe( gulp.dest( styleDestination ) )
+    .pipe( browserSync.stream() )
+    .pipe( notify( { message: 'TASK: "styles" Completed!', onLast: true } ) )
 });
 
 
@@ -188,16 +185,16 @@ gulp.task('styles', function () {
  * 		4. Uglifes/Minifies the JS file and generates vendors.min.js
  */
 gulp.task( 'vendorsJs', function() {
-	gulp.src( jsVendorSRC )
-		.pipe( concat( jsVendorFile + '.js' ) )
-		.pipe( gulp.dest( jsVendorDestination ) )
-		.pipe( rename( {
-			basename: jsVendorFile,
-			suffix: '.min'
-		}))
-		.pipe( uglify() )
-		.pipe( gulp.dest( jsVendorDestination ) )
-		.pipe( notify( { message: 'TASK: "vendorsJs" Completed!', onLast: true } ) );
+  gulp.src( jsVendorSRC )
+    .pipe( concat( jsVendorFile + '.js' ) )
+    .pipe( gulp.dest( jsVendorDestination ) )
+    .pipe( rename( {
+      basename: jsVendorFile,
+      suffix: '.min'
+    }))
+    .pipe( uglify() )
+    .pipe( gulp.dest( jsVendorDestination ) )
+    .pipe( notify( { message: 'TASK: "vendorsJs" Completed!', onLast: true } ) );
 });
 
 
@@ -213,16 +210,16 @@ gulp.task( 'vendorsJs', function() {
  * 		4. Uglifes/Minifies the JS file and generates custom.min.js
  */
 gulp.task( 'customJS', function() {
- 	gulp.src( jsCustomSRC )
-		.pipe( concat( jsCustomFile + '.js' ) )
-		.pipe( gulp.dest( jsCustomDestination ) )
-		.pipe( rename( {
-			basename: jsCustomFile,
-			suffix: '.min'
-		}))
-		.pipe( uglify() )
-		.pipe( gulp.dest( jsCustomDestination ) )
-		.pipe( notify( { message: 'TASK: "customJs" Completed!', onLast: true } ) );
+   gulp.src( jsCustomSRC )
+    .pipe( concat( jsCustomFile + '.js' ) )
+    .pipe( gulp.dest( jsCustomDestination ) )
+    .pipe( rename( {
+      basename: jsCustomFile,
+      suffix: '.min'
+    }))
+    .pipe( uglify() )
+    .pipe( gulp.dest( jsCustomDestination ) )
+    .pipe( notify( { message: 'TASK: "customJs" Completed!', onLast: true } ) );
 });
 
 
@@ -240,17 +237,16 @@ gulp.task( 'customJS', function() {
  * again, do it with the command `gulp images`.
  */
 gulp.task( 'images', function() {
-	gulp.src( imagesSRC )
-		.pipe( imagemin( {
-					progressive: true,
-					optimizationLevel: 3, // 0-7 low-high
-					interlaced: true,
-					svgoPlugins: [{removeViewBox: false}]
-				} ) )
-		.pipe(gulp.dest( imagesDestination ))
-		.pipe( notify( { message: 'TASK: "images" Completed!', onLast: true } ) );
+  gulp.src( imagesSRC )
+    .pipe( imagemin( {
+          progressive: true,
+          optimizationLevel: 3, // 0-7 low-high
+          interlaced: true,
+          svgoPlugins: [{removeViewBox: false}]
+        } ) )
+    .pipe(gulp.dest( imagesDestination ))
+    .pipe( notify( { message: 'TASK: "images" Completed!', onLast: true } ) );
 });
-
 
 
  /**
@@ -259,7 +255,7 @@ gulp.task( 'images', function() {
   * Watches for file changes and runs specific tasks.
   */
  gulp.task( 'default', ['styles', 'vendorsJs', 'customJS', 'images', 'browser-sync'], function () {
- 	gulp.watch( styleWatchFiles, [ 'styles' ] );
- 	gulp.watch( vendorJSWatchFiles, [ 'vendorsJs', reload ]  );
- 	gulp.watch( customJSWatchFiles, [ 'customJS', reload ]  );
+   gulp.watch( styleWatchFiles, [ 'styles' ] );
+   gulp.watch( vendorJSWatchFiles, [ 'vendorsJs', reload ]  );
+   gulp.watch( customJSWatchFiles, [ 'customJS', reload ]  );
  });
