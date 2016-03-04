@@ -11,7 +11,7 @@
  * 			5. Watches files for changes in CSS or JS
  *
  * @since 1.0.0
- * @author Ahmad Awais (@mrahmadawais)
+ * @author Ahmad Awais (@mrahmadawais) / forked by Alessandro Muraro (@akmur)
  */
 
  /**
@@ -24,15 +24,15 @@
   * Edit the variables as per your project requirements.
   */
 
-var project             = 'MyProject'; // Project Name.
-var projecturl          = 'myproject.dev'; // Project URL.
+var project             = 'Talkin'; // Project Name.
+var projecturl          = 'talkin.dev'; // Project URL. Could be something like localhost:8888.
 
 
 var styleSRC            = './assets/src/scss/style.scss'; // Path to main .scss file.
 var styleDestination    = './assets/dist/css/'; // Path to place the compiled CSS file.
 
 
-var jsVendorSRC         = './assets/src/js/vendors/**/*.js'; // Path to JS vendors folder.
+var jsVendorSRC         = './assets/src/js/vendors/*.js'; // Path to JS vendors folder.
 var jsVendorDestination = './assets/dist/js/'; // Path to place the compiled JS vendors file.
 var jsVendorFile        = 'vendors'; // Compiled JS vendors file name i.e. vendors.js.
 
@@ -42,7 +42,7 @@ var jsCustomDestination = './assets/dist/js/'; // Path to place the compiled JS 
 var jsCustomFile        = 'main'; // Compiled JS custom file name. i.e. main.js.
 
 
-var imagesSRC		= './assets/src/img/**/*.{png,jpg,gif,svg}'; // Source folder of images which should be optimized.
+var imagesSRC			= './assets/src/img/**/*.{png,jpg,gif,svg}'; // Source folder of images which should be optimized.
 var imagesDestination	= './assets/dist/img/'; // Destination folder of optimized images. Must be different from the imagesSRC folder.
 
 
@@ -105,29 +105,29 @@ var reload       = browserSync.reload; // For manual browser reload.
  * 		1. Sets the project URL
  * 		2. Sets inject CSS
  * 		3. You may define a custom port
- * 		4. You may want to stop the browser from openning automatically
+ * 		4. You may want to stop the browser from opening automatically
  */
- gulp.task( 'browser-sync', function() {
-   browserSync.init( {
+gulp.task( 'browser-sync', function() {
+  browserSync.init( {
 
-     // For more options
-     // @link http://www.browsersync.io/docs/options/
+    // For more options
+    // @link http://www.browsersync.io/docs/options/
 
-     // Project URL.
-     proxy: projecturl,
+    // Project URL.
+    proxy: projecturl,
 
-     // Stop the browser from automatically opening.
-     open: false,
+    // Stop the browser from automatically opening.
+    open: false,
 
-     // Inject CSS changes.
-     // Commnet it to reload browser for every CSS change.
-     injectChanges: true,
+    // Inject CSS changes.
+    // Commnet it to reload browser for every CSS change.
+    //injectChanges: true,
 
-     // Use a specific port (instead of the one auto-detected by Browsersync).
-     // port: 7000,
+    // Use a specific port (instead of the one auto-detected by Browsersync).
+    // port: 7000,
 
-   } );
- });
+  } );
+});
 
 
 /**
@@ -155,11 +155,13 @@ gulp.task('styles', function () {
       // outputStyle: 'expanded',
       precision: 10
     } ) )
+    .on('error', console.error.bind(console))
     .pipe( sourcemaps.write( { includeContent: false } ) )
     .pipe( sourcemaps.init( { loadMaps: true } ) )
     .pipe( autoprefixer( AUTOPREFIXER_BROWSERS ) )
 
     .pipe( sourcemaps.write ( styleDestination ) )
+    .pipe( browserSync.stream() )
     .pipe( gulp.dest( styleDestination ) )
 
 
