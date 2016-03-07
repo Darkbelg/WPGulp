@@ -356,4 +356,9 @@ gulp.task('svgSprite', function () {
    gulp.watch( customJSWatchFiles, [ 'customJS-dev' ]  );
  });
 
+ /**
+  * Distribution Tasks.
+  *
+  * Runs specific tasks with minification, no watch and reload.
+  */
  gulp.task( 'dist', ['styles-dist', 'vendorsJs-dist', 'customJS-dist', 'images', 'svgSprite'] );
