@@ -77,6 +77,8 @@ var gulp          = require('gulp'); // Gulp of-course
 var sass          = require('gulp-sass'); // Gulp pluign for Sass compilation
 var cleanCSS      = require('gulp-clean-css');
 var autoprefixer  = require('gulp-autoprefixer'); // Autoprefixing magic
+var mmq           = require('gulp-merge-media-queries'); // Combine matching media queries into one media query definition.
+
 
 // JS related plugins.
 var concat        = require('gulp-concat'); // Concatenates JS files
@@ -116,11 +118,12 @@ gulp.task('stylesDist', function () {
    gulp.src( styleSRC )
     .pipe( sourcemaps.init() )
     .pipe( sass( {
-     outputStyle: 'compressed',
+     outputStyle: 'compact',
      precision: 10
     } ) )
     .on('error', console.error.bind(console))
     .pipe( autoprefixer( AUTOPREFIXER_BROWSERS ) )
+    .pipe( mmq( { log: true } ) ) 
     .pipe(cleanCSS({debug: true}, function(details) {
         console.log(details.name + ' original file size: ' + details.stats.originalSize);
         console.log(details.name + ' minified file size: ' + details.stats.minifiedSize);
