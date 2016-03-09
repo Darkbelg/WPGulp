@@ -333,8 +333,8 @@ gulp.task('serve', function() {
 });
 
 
-/*******************************************/
-/* 🤘 Available Gulp Commands
+/*******************************************
+* 🤘 Available Gulp Commands
 *
 * type 'gulp' to watch and serve
 * type 'gulp images' to regenerate images and svg sprite
@@ -346,5 +346,5 @@ gulp.task( 'default', ['watch', 'images', 'serve'] );
 gulp.task( 'dist', ['stylesDist', 'vendorsJsDist', 'customJsDist', 'images'] );
 
 /*******************************************/
-/* 🎉 That's all folks!
+/* 🎉 That's all folks
 /*******************************************/
