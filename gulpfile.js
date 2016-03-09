@@ -309,7 +309,6 @@ gulp.task('watch', function(){
 /******************************************
 * 💻 Serve Tasks
 /******************************************
-
 /*******************************************
 * Task: 'browser-sync'.
 *
@@ -319,7 +318,7 @@ gulp.task('watch', function(){
 *   2. Watches styles for changes
 /*******************************************/
 
-gulp.task('serve', ['stylesDev'], function() {
+gulp.task('serve', function() {
    browserSync.init({
      // For more options
      // @link http://www.browsersync.io/docs/options/
@@ -331,20 +330,21 @@ gulp.task('serve', ['stylesDev'], function() {
      // Use a specific port (instead of the one auto-detected by Browsersync).
      // port: 8080
    });
-
-   gulp.watch( styleWatchFiles, [ 'stylesDev' ] );
 });
 
 
 /*******************************************/
-/* 🎉 Available Gulp Commands
+/* 🤘 Available Gulp Commands
 *
 * type 'gulp' to watch and serve
 * type 'gulp images' to regenerate images and svg sprite
 * type 'gulp dist' to compile a minified version of files, and process images
 *
-* Watches for file changes and runs specific tasks.
 /*******************************************/
 
 gulp.task( 'default', ['watch', 'images', 'serve'] );
 gulp.task( 'dist', ['stylesDist', 'vendorsJsDist', 'customJsDist', 'images'] );
+
+/*******************************************/
+/* 🎉 That's all folks!
+/*******************************************/
