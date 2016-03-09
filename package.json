@@ -7,23 +7,19 @@
     "type": "git",
     "url": "https://github.com/akmur/WPGulp"
   },
-  "dependencies": {
-    "bourbon": "^4.2.6"
-  },
   "devDependencies": {
-    "bourbon": "^4.2.6",
     "browser-sync": "^2.11.1",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-clean-css": "^2.0.3",
     "gulp-concat": "^2.5.2",
     "gulp-imagemin": "^2.4.0",
+    "gulp-merge-media-queries": "^0.2.1",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^2.0.0",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-svg-sprite": "^1.2.19",
     "gulp-uglify": "^1.1.0",
-    "node-neat": "^1.7.2"
   }
 }
