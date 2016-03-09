@@ -25,8 +25,8 @@
 /******************************************/
 
 // Style paths
-var project             = 'Alex Muraro'; // Project Name.
-var projecturl          = 'alexmuraro.dev'; // Project URL. Could be something like localhost:8888 or project.dev.
+var project             = 'Project Name'; // Project Name.
+var projecturl          = 'projectname.dev'; // Project URL. Could be something like localhost:8888 or project.dev.
 
 var styleSRC            = './assets/src/scss/style.scss'; // Path to main .scss file.
 var styleDestination    = './assets/dist/css/'; // Path to place the compiled CSS file.
