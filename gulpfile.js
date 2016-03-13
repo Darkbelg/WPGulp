@@ -79,15 +79,14 @@ var cleanCSS      = require('gulp-clean-css');
 var autoprefixer  = require('gulp-autoprefixer'); // Autoprefixing magic
 var mmq           = require('gulp-merge-media-queries'); // Combine matching media queries into one media query definition.
 
-
 // JS related plugins.
+var babel         = require('gulp-babel');  // Babel compiler
 var concat        = require('gulp-concat'); // Concatenates JS files
 var uglify        = require('gulp-uglify'); // Minifies JS files
 
 // Image related plugins.
 var imagemin      = require('gulp-imagemin'); // Minify PNG, JPEG, GIF and SVG images with imagemin.
 var svgSprite     = require('gulp-svg-sprite');
-var svgmin        = require('gulp-svgmin');
 
 // Utility related plugins.
 var rename       = require('gulp-rename'); // Renames files E.g. style.css -> style.min.css
@@ -123,7 +122,7 @@ gulp.task('stylesDist', function () {
     } ) )
     .on('error', console.error.bind(console))
     .pipe( autoprefixer( AUTOPREFIXER_BROWSERS ) )
-    .pipe( mmq( { log: true } ) ) 
+    .pipe( mmq( { log: true } ) )
     .pipe(cleanCSS({debug: true}, function(details) {
         console.log(details.name + ' original file size: ' + details.stats.originalSize);
         console.log(details.name + ' minified file size: ' + details.stats.minifiedSize);
@@ -136,7 +135,7 @@ gulp.task('stylesDist', function () {
 /******************************************
 * Task: 'stylesDev'.
 *
-* Compiles Sass, Autoprefixes it and Minifies CSS.
+* Compiles Sass and Autoprefixes.
 *
 *    1. Gets the source scss file
 *    2. Compiles Sass to CSS
@@ -216,8 +215,13 @@ gulp.task( 'vendorJsDev', function() {
 
 gulp.task( 'customJsDist', function() {
    gulp.src( jsCustomSRC )
+     .pipe( sourcemaps.init() )
+     .pipe(babel({
+       presets: ['es2015']
+     }))
     .pipe( concat( jsCustomFile + '.js' ) )
     .pipe( uglify() )
+    .pipe( sourcemaps.write( '.' ) )
     .pipe( gulp.dest( jsCustomDestination ) )
     .pipe( notify( { message: 'TASK: "customJsDist" 👍', onLast: true } ) );
 });
@@ -235,7 +239,12 @@ gulp.task( 'customJsDist', function() {
 
 gulp.task( 'customJsDev', function() {
    gulp.src( jsCustomSRC )
+    .pipe( sourcemaps.init() )
+    .pipe(babel({
+      presets: ['es2015']
+    }))
     .pipe( concat( jsCustomFile + '.js' ) )
+    .pipe( sourcemaps.write( '.' ) )
     .pipe( gulp.dest( jsCustomDestination ) )
     .pipe( browserSync.stream() )
     .pipe( notify( { message: 'TASK: "customJsDev" 👍', onLast: true } ) );
@@ -257,29 +266,6 @@ gulp.task( 'customJsDev', function() {
 * This task will run only once, if you want to run it
 * again, do it with the command 'gulp svgSprite'.
 /******************************************/
-
-// svgSprite configuration
-
-svgConfig = {
-  shape: {
-    dimension: {
-      maxWidth: 32,
-      maxHeight: 32
-    },
-    spacing: {
-      padding: 10
-    }
-  },
-  mode: {
-    view: {
-      bust: false,
-      render: {
-        scss: true
-      }
-    },
-    symbol: true
-  }
-};
 
 gulp.task('images', function () {
   return gulp.src( imagesSRC )
@@ -306,9 +292,11 @@ gulp.task('watch', function(){
   gulp.watch( customJSWatchFiles, [ 'customJsDev' ]  );
 });
 
+
 /******************************************
 * 💻 Serve Tasks
 /******************************************
+
 /*******************************************
 * Task: 'browser-sync'.
 *
